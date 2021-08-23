@@ -70,5 +70,13 @@
 		WHERE sex = #{gender}
 	</select>
 	
+	<insert id="insertPet" parameterType="java.util.Map"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO Pet (NAME, OWNER, SPECIES, SEX,
+		BIRTH, DEATH)
+		VALUES (#{name}, #{owner}, #{species}, #{sex},
+		#{birth}, #{death})
+	</insert>
+	
 	
 </mapper>

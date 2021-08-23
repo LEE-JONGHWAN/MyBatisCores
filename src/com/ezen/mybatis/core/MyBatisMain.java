@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+
 public class MyBatisMain {
 	public static void main(String[] args) {
 		try {
@@ -45,6 +46,23 @@ public class MyBatisMain {
 			 */
 			List <PetDVO> genderPets = petDaoImpl.petsByGender("f");
 			genderPets.forEach(System.out::println);
+			
+			/**
+			 * 애완동물 생성하여 삽입
+			 */
+			PetDVO newPet = new PetDVO();
+
+			newPet.setBirth(Util.getDate("1992-01-03")); // JB_module 프로젝트 Util 클래스
+			newPet.setDeath(null);
+			newPet.setName("Rolf");
+			newPet.setOwner("종범3");;
+			newPet.setSex('m');;
+			newPet.setSpecies("개");
+			
+
+			int petId = petDaoImpl.insertPet(newPet);
+			System.out.println("ID: " + petId);
+
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
