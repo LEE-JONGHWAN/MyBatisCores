@@ -27,7 +27,7 @@
 		SEX as sex, BIRTH as birth, DEATH as death
 		FROM Pet where
 		SEX=#{sex}
-	</select>
+	</select>	
 
 	<resultMap id="byGenderMap" type="PetDVO">
 		<id property="sex" column="sex" />
@@ -44,16 +44,6 @@
 		FROM Pet
 	</select>
 
-	<select id="getPetObject" parameterType="java.lang.String"
-		resultType="PetDVO">
-		SELECT ID as id, NAME as name, OWNER as owner,
-		SPECIES as
-		species,
-		SEX as sex, BIRTH as birth, DEATH as death
-		FROM Pet where name
-		= #{name}
-	</select>
-
 	<select id="getAllPets" resultType="PetDVO">
 		SELECT ID as id, NAME as
 		name, OWNER as owner,
@@ -61,4 +51,12 @@
 		DEATH as death
 		FROM Pet
 	</select>
+	
+	<select id="getPetObject" parameterType="java.lang.String"
+	resultType="PetDVO">
+	SELECT ID as id, NAME as name, OWNER as owner, SPECIES as species,
+	SEX as sex, BIRTH as birth, DEATH as death
+	FROM Pet where name = #{name}
+	</select>
+	
 </mapper>
