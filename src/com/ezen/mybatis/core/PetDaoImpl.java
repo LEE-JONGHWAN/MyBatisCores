@@ -29,4 +29,13 @@ public class PetDaoImpl implements PetDAO {
 		return sqlSessionTemplate.selectList("getAllSpecies"); 
 	}
 
+	@Override
+	public List<PetDVO> petsByGender(String gender) {
+		HashMap<String, String> param = new HashMap<String, String>();
+		param.put("gender", gender);
+		List<PetDVO> result = sqlSessionTemplate.selectList("petsByGender",
+			param);
+		return result;
+	}
+
 }

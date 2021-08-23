@@ -53,10 +53,22 @@
 	</select>
 	
 	<select id="getPetObject" parameterType="java.lang.String"
-	resultType="PetDVO">
-	SELECT ID as id, NAME as name, OWNER as owner, SPECIES as species,
-	SEX as sex, BIRTH as birth, DEATH as death
-	FROM Pet where name = #{name}
+		resultType="PetDVO">
+		SELECT ID as id, NAME as name, OWNER as owner, SPECIES as species,
+		SEX as sex, BIRTH as birth, DEATH as death
+		FROM Pet where name = #{name}
 	</select>
+	
+	<select id="petsByGender" parameterType="java.lang.String"
+		resultType="PetDVO">
+		SELECT ID as id, NAME as
+		name, OWNER as owner,
+		SPECIES as species, SEX as sex,
+		BIRTH as birth,
+		DEATH as death
+		FROM Pet
+		WHERE sex = #{gender}
+	</select>
+	
 	
 </mapper>
