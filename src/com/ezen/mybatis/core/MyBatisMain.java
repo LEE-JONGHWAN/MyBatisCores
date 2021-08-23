@@ -63,6 +63,24 @@ public class MyBatisMain {
 			int petId = petDaoImpl.insertPet(newPet);
 			System.out.println("ID: " + petId);
 
+			/**
+			 * 투캅스 정보를 일부 수정한다. 투캅스 두 마리 청와대 입양 반영
+			 * 수정(갱신) 후, 그 동물의 정보를 출력
+			 */
+			PetDVO petDataObj = new PetDVO();
+			String name = "Rolf";
+
+			petDataObj.setOwner("자연인");
+			petDataObj.setName(name);
+			petDataObj.setDeath(null);
+			petDataObj.setId(petId);
+
+			petDaoImpl.updatePetData(petDataObj);	
+			PetDVO changedPet = petDaoImpl.getPetObject(petId); // 행1
+			System.out.println("--- 애완동물 ---"); // 행2
+			System.out.println(changedPet); // 행3
+
+			
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

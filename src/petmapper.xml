@@ -10,8 +10,8 @@
 	
 	<update id ="updatePetData" parameterType ="java.util.Map">
 		UPDATE Pet p
-		SET p.owner = #{owner}
-		WHERE p.name = #{name} 
+		SET p.owner	= #{owner}, p.death = #{death}
+		WHERE p.ID = #{id}
 	</update>
 	
 	<insert id="createPet" parameterType="java.util.Map"
@@ -52,11 +52,19 @@
 		FROM Pet
 	</select>
 	
+	
 	<select id="getPetObject" parameterType="java.lang.String"
 		resultType="PetDVO">
 		SELECT ID as id, NAME as name, OWNER as owner, SPECIES as species,
 		SEX as sex, BIRTH as birth, DEATH as death
 		FROM Pet where name = #{name}
+	</select>
+	
+	<select id="getPetById" parameterType="java.lang.Integer"
+		resultType="PetDVO">
+		SELECT ID as id, NAME as name, OWNER as owner, SPECIES as species,
+		SEX as sex, BIRTH as birth, DEATH as death
+		FROM Pet WHERE id = #{id}
 	</select>
 	
 	<select id="petsByGender" parameterType="java.lang.String"

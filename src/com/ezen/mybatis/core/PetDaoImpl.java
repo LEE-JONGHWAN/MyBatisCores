@@ -26,6 +26,12 @@ public class PetDaoImpl implements PetDAO {
 //		inputMap.put("name", petName);
 		return (PetDVO) sqlSessionTemplate.selectOne("getPetObject", petName);
 	}
+	
+	@Override
+	public PetDVO getPetObject(int petId) {
+		return (PetDVO) sqlSessionTemplate.selectOne("getPetById", petId);
+	}
+	
 	public List<String> getAllSpecies() {
 		return sqlSessionTemplate.selectList("getAllSpecies"); 
 	}
@@ -54,5 +60,20 @@ public class PetDaoImpl implements PetDAO {
 
 		return longId.intValue();
 	}
+	
+	@Override
+	public void updatePetData(PetDVO petDVO) throws Exception {
+		Map<String, Object> inputMap = new HashMap<String, Object>();
+
+		inputMap.put("owner", petDVO.getOwner());
+		inputMap.put("death", petDVO.getDeath());
+		inputMap.put("name", petDVO.getName());
+		inputMap.put("id", petDVO.getId());
+
+		sqlSessionTemplate.update("updatePetData", inputMap);
+	}
+
+
+
 
 }
