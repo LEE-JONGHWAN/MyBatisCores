@@ -21,7 +21,7 @@ public class PetDVO implements Serializable {
 		return "애완동몰[이름=" + name + ", 주인=" + owner + 
 				", 종류=" + species + ", 암수=" + sex
 				+ ", 출생=" + birthStr 
-				+ ", 사망=" + deathStr + "]";
+				+ ", 사망=" + deathStr + "]\n";
 	}
 	public Integer getId() {
 		return id;

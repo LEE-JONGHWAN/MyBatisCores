@@ -3,6 +3,58 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="petmapper">
 	<!-- Add SQL statements -->
+	<update id="updatePetDynamically" parameterType="java.util.Map">
+		UPDATE Pet	
+			<set>	
+				<if test="birth != null"> birth = #{birth}, </if>	
+				<if test="sex != null"> sex = #{sex} </if>	
+				<if test="death != null"> death = #{death}, </if>	
+			</set>
+		WHERE name = #{name} 
+	</update>
+	
+	
+	<!-- PetDVO 대신 parameterType="java.util.Map" -->
+	<select id="selectPetsIn" parameterType="java.util.Map"
+			resultType="PetDVO">
+			SELECT * FROM Pet P WHERE species IN 
+			<foreach item="item" index="index" collection="speciesList"
+					open ="(" separator =", " close =")">
+				#{item}
+			</foreach> 
+	</select>
+	
+	
+	<select id ="findSnakePets" parameterType ="PetDVO" resultType ="PetDVO">
+		SELECT * FROM Pet WHERE species = #{species}
+		<choose>
+			<when test ="sex != null">
+				AND sex = #{sex}
+			</when>
+			<when test ="owner != null">
+				AND owner like '%' || #{owner} || '%'
+			</when>
+			<otherwise>
+				AND name like '따%'      <!-- ("owner", "남") 으로 인해 작동함 -->
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="findAllSnakes" parameterType="java.util.Map" 
+		resultType="PetDVO">
+			SELECT * FROM Pet WHERE 1 = 1
+			<if test="species != null">
+				AND species = #{species}
+			</if>
+			<if test="sex != null">
+				AND sex = #{sex}
+			</if>
+			<if test="owner != null">
+				AND owner like #{owner}
+			</if>
+	</select>
+	
 	<delete id ="deletePet" parameterType="java.util.Map">
 		DELETE FROM Pet
 		WHERE name = #{name} AND species = #{species}

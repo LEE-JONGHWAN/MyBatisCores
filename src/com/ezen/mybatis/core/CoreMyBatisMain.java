@@ -1,10 +1,13 @@
 package com.ezen.mybatis.core;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.ibatis.io.Resources;
@@ -111,6 +114,7 @@ public class CoreMyBatisMain {
 			petObj.setSex('m');
 			Date today = getDate(2020, 11, 15);
 			petObj.setBirth(today);
+			
 			/**
 			 * 생성된 애완동물을 DB pet 테이블에 삽입
 			 */
@@ -127,6 +131,7 @@ public class CoreMyBatisMain {
 			for (PetDVO p : main.selectByGender("m")) {
 				System.out.println(p);
 			}
+			
 			// 누리 소유자 이름 출력
 			String petName = "누리";
 			pet = main.getPetObject(petName);
@@ -134,6 +139,55 @@ public class CoreMyBatisMain {
 			// Printing pets data
 			List<PetDVO> allPets = main.getAllPetsData();
 			System.out.println("--- 애완동물 숫자 ----" + allPets.size());
+			
+			/**
+			 * 모든 뱀 애완 동물을 찾아서 출력
+			 */
+			List<PetDVO> allSnakes = main.findAllSnakes(); 
+			System.out.println("--- 뱀 애완 동물들 ---");
+			System.out.println(allSnakes); 
+			
+			/**
+			 * 모든 뱀 애완 동물을 찾아서 출력 2
+			 */
+			List <PetDVO> snakePets = main.findSomeSnakes(); 
+			System.out.println("--- 뱀 애완 동물 2 ---");
+			System.out.println(snakePets);
+			
+			/**
+			 *  뱀 고양이 앵무새를 출력한다.
+			 */
+			List<PetDVO> selectedPets = main.selectPetsIn();
+			System.out.println("--- 선택 종에 포함되는 애완 동물들 ---");
+			for (PetDVO pets : selectedPets)
+				System.out.println(pets);
+			
+			PetDVO petDVO = new PetDVO();
+			petDVO.setName("스륵이");
+			petDVO.setBirth(new Date()); // 사망일을 오늘로 설정
+//			petDVO.setDeath(Util.getDate("2020-1-3")); // 사망일을 오늘로 설정
+//			petDVO.setSex('m'); // birth 같이 값이 배정되지 않는 필드는 null 값을 가진다.
+			// 자료를 갱신한다.
+			main.updatePetDynamically(petDVO);
+
+			/**
+			 * 자료를 갱신한다.
+			 */
+			petDVO = new PetDVO();
+			petDVO.setName("스륵이");
+
+			/**
+			 * 뱀의 생일을 만든다.
+			 */
+			String inputString = "1982-11-27";
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date inputDate = dateFormat.parse(inputString);
+
+			petDVO.setBirth(inputDate);
+			main.updatePetDynamically(petDVO);
+
+			
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -165,4 +219,46 @@ public class CoreMyBatisMain {
 	public List<PetDVO> getAllPetsData() throws Exception {
 		return getSqlSession().selectList("getAllPets");
 	}
+	
+	public List<PetDVO> findSomeSnakes() throws Exception {
+		HashMap<String, String> inputMap = new HashMap<String, String>();
+		inputMap.put("species", "뱀");
+		inputMap.put("sex", "f");
+		inputMap.put("owner", "남");
+		return getSqlSession().selectList("findSnakePets", inputMap);
+	}
+	
+	public List<PetDVO> findAllSnakes() throws Exception {
+		HashMap <String, String> inputMap = new HashMap <String, String>();
+//		inputMap.put("species", "뱀");
+		inputMap.put("sex", "f");
+		inputMap.put("owner", "최%");
+		return getSqlSession().selectList("findAllSnakes", inputMap);
+	}
+	
+	public List<PetDVO> selectPetsIn() throws Exception {
+		HashMap<String, Object> inputMap = new HashMap<String, Object>();
+		List<String> speciesList = new ArrayList<String>();
+		speciesList.add("앵무새");
+		speciesList.add("고양이");
+		speciesList.add("뱀");
+		inputMap.put("speciesList", speciesList);
+		return getSqlSession().selectList("selectPetsIn", inputMap);
+	}
+
+	public void updatePetDynamically(PetDVO petDVO) throws Exception {
+		Map<String, Object> inputMap = new HashMap<String, Object>();
+		inputMap.put("birth", petDVO.getBirth());
+		inputMap.put("death", petDVO.getDeath());
+		inputMap.put("sex", petDVO.getSex());
+		inputMap.put("name", petDVO.getName()); // 조건 값
+		System.out.println("--- 갱신 정보 지도 ---" + inputMap);
+		SqlSession sqlSession = getSqlSession();
+		sqlSession.update("updatePetDynamically", inputMap);
+		sqlSession.commit(); 
+	}
+	
+	
+
+
 }
