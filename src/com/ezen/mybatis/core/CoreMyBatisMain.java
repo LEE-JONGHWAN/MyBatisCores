@@ -150,9 +150,9 @@ public class CoreMyBatisMain {
 			/**
 			 * 모든 뱀 애완 동물을 찾아서 출력 2
 			 */
-			List <PetDVO> snakePets = main.findSomeSnakes(); 
-			System.out.println("--- 뱀 애완 동물 2 ---");
-			System.out.println(snakePets);
+//			List <PetDVO> snakePets = main.findSomeSnakes(); 
+//			System.out.println("--- 뱀 애완 동물 2 ---");
+//			System.out.println(snakePets);
 			
 			/**
 			 *  뱀 고양이 앵무새를 출력한다.
@@ -186,6 +186,13 @@ public class CoreMyBatisMain {
 			petDVO.setBirth(inputDate);
 			main.updatePetDynamically(petDVO);
 
+			/**
+			 * 남씨가 키우는 뱀을 나열하자.
+			 */
+			List<PetDVO> snakes = petDaoImpl.findAllSnakes();
+			for (PetDVO snake: snakes) 
+				System.out.println(snake);
+
 			
 			
 		} catch (Exception ex) {
@@ -218,14 +225,6 @@ public class CoreMyBatisMain {
 
 	public List<PetDVO> getAllPetsData() throws Exception {
 		return getSqlSession().selectList("getAllPets");
-	}
-	
-	public List<PetDVO> findSomeSnakes() throws Exception {
-		HashMap<String, String> inputMap = new HashMap<String, String>();
-		inputMap.put("species", "뱀");
-		inputMap.put("sex", "f");
-		inputMap.put("owner", "남");
-		return getSqlSession().selectList("findSnakePets", inputMap);
 	}
 	
 	public List<PetDVO> findAllSnakes() throws Exception {
