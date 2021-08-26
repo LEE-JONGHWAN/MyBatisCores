@@ -14,6 +14,8 @@ public class MyBatisMain {
 			
 			PetDAO petDaoImpl =
 					(PetDAO)appContext.getBean("petDaoImpl");
+			
+			
 			/**
 			 * 애완동물 목록 길이 출력
 			 */
@@ -80,6 +82,18 @@ public class MyBatisMain {
 			System.out.println("--- 애완동물 ---"); // 행2
 			System.out.println(changedPet); // 행3
 
+			/**
+			 * 특정 종(species)과 이름이 주어졌을 때 애완동물을 삭제하기
+			 */
+			int delCnt = petDaoImpl.deletePet("개", "Rolf");
+			System.out.println("삭제된 애완 동물 수: " + delCnt);
+			
+			/**
+			 * 특정 종(species)과 출생일 상한이 주어졌을 때 애완동물(들)을 삭제하기
+			 */
+			delCnt = petDaoImpl.deleteByBirth("강아지", 
+					Util.getDate("2000-1-16"));
+			System.out.println("삭제된 애완 동물 수: " + delCnt);
 			
 
 		} catch (Exception ex) {

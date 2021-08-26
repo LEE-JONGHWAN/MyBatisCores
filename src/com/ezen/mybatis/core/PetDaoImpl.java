@@ -1,5 +1,6 @@
 package com.ezen.mybatis.core;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +72,24 @@ public class PetDaoImpl implements PetDAO {
 		inputMap.put("id", petDVO.getId());
 
 		sqlSessionTemplate.update("updatePetData", inputMap);
+	}
+
+	@Override
+	public int deletePet(String species, String name) throws Exception {
+		HashMap<String, String> inputMap = new HashMap<String, String>();
+		inputMap.put("species", species);
+		inputMap.put("name", name);
+
+		return sqlSessionTemplate.delete("deletePet", inputMap);
+	}
+
+	@Override
+	public int deleteByBirth(String species, Date birth) throws Exception {
+		HashMap<String, Object> inputMap = new HashMap<>();
+		inputMap.put("species", species);
+		inputMap.put("birth", birth);
+
+		return sqlSessionTemplate.delete("deleteByBirth", inputMap);
 	}
 
 

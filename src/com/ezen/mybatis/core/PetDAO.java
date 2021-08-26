@@ -1,5 +1,6 @@
 package com.ezen.mybatis.core;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PetDAO {
@@ -11,5 +12,7 @@ public interface PetDAO {
 	List<PetDVO> petsByGender(String gender);
 	int insertPet(PetDVO petDVO);
 	void updatePetData(PetDVO petDVO) throws Exception;
+	int deletePet(String species, String name) throws Exception;
+	int deleteByBirth(String species, Date birth) throws Exception;
 }
 

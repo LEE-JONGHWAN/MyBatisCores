@@ -3,9 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="petmapper">
 	<!-- Add SQL statements -->
+	
 	<delete id ="deletePet" parameterType="java.util.Map">
 		DELETE FROM Pet
 		WHERE name = #{name} AND species = #{species}
+	</delete>
+
+	<delete id ="deleteByBirth" parameterType="java.util.Map">
+		<![CDATA[ DELETE FROM Pet
+		WHERE birth < #{birth} AND species = #{species} ]]>
 	</delete>
 	
 	<update id ="updatePetData" parameterType ="java.util.Map">
